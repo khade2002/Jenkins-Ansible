@@ -1,47 +1,35 @@
 - name: Deploy Flask App Locally
   hosts: localhost
   become: yes
-  vars:
-    app_dir: /home/ubuntu/flask_app
-    venv_dir: "{{ app_dir }}/venv"
-
   tasks:
+    - name: Install Python & pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+
     - name: Ensure app directory exists
       file:
-        path: "{{ app_dir }}"
+        path: /home/ubuntu
         state: directory
-        mode: '0755'
 
     - name: Copy app.py to target
       copy:
         src: app.py
-        dest: "{{ app_dir }}/app.py"
+        dest: /home/ubuntu/app.py
         mode: '0755'
 
-    - name: Install required system packages
-      apt:
-        name:
-          - python3-venv
-          - python3-pip
-        state: present
-        update_cache: yes
+    - name: Copy templates folder to target
+      copy:
+        src: templates/
+        dest: /home/ubuntu/templates/
+        mode: '0755'
 
-    - name: Create virtual environment
-      command: python3 -m venv "{{ venv_dir }}"
-      args:
-        creates: "{{ venv_dir }}/bin/activate"
+    - name: Install Flask
+      pip:
+        name: Flask==2.3.2
+        executable: pip3
 
-    - name: Install Flask in virtualenv
-      shell: |
-        {{ venv_dir }}/bin/pip install --upgrade pip
-        {{ venv_dir }}/bin/pip install Flask==2.3.2
-      args:
-        executable: /bin/bash
-
-    - name: Run Flask app using virtualenv
-      shell: |
-        nohup {{ venv_dir }}/bin/python {{ app_dir }}/app.py &
-      args:
-        executable: /bin/bash
-      async: 10
-      poll: 0
+    - name: Run Flask app
+      shell: nohup python3 /home/ubuntu/app.py &

@@ -1,6 +1,7 @@
 from flask import Flask, render_template
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="/home/ubuntu/templates")
 
 @app.route("/")
 def home():
