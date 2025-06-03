@@ -18,9 +18,11 @@
         dest: "{{ app_dir }}/app.py"
         mode: '0755'
 
-    - name: Install Python venv package
+    - name: Install required system packages
       apt:
-        name: python3-venv
+        name:
+          - python3-venv
+          - python3-pip
         state: present
         update_cache: yes
 
@@ -31,13 +33,15 @@
 
     - name: Install Flask in virtualenv
       shell: |
-        source "{{ venv_dir }}/bin/activate"
-        pip install --upgrade pip
-        pip install Flask==2.3.2
+        {{ venv_dir }}/bin/pip install --upgrade pip
+        {{ venv_dir }}/bin/pip install Flask==2.3.2
+      args:
+        executable: /bin/bash
 
     - name: Run Flask app using virtualenv
       shell: |
-        source "{{ venv_dir }}/bin/activate"
-        nohup python "{{ app_dir }}/app.py" &
+        nohup {{ venv_dir }}/bin/python {{ app_dir }}/app.py &
+      args:
+        executable: /bin/bash
       async: 10
       poll: 0
