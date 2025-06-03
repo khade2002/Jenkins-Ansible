@@ -2,34 +2,55 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: Install Python & pip
+
+    - name: Install Python3 and pip
       apt:
         name:
           - python3
+          - python3-venv
           - python3-pip
         state: present
+        update_cache: yes
 
     - name: Ensure app directory exists
       file:
         path: /home/ubuntu
         state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
 
     - name: Copy app.py to target
       copy:
         src: app.py
         dest: /home/ubuntu/app.py
+        owner: ubuntu
+        group: ubuntu
         mode: '0755'
 
     - name: Copy templates folder to target
       copy:
         src: templates/
         dest: /home/ubuntu/templates/
+        owner: ubuntu
+        group: ubuntu
         mode: '0755'
 
-    - name: Install Flask
-      pip:
-        name: Flask==2.3.2
-        executable: pip3
+    - name: Create virtual environment for Flask app
+      command: python3 -m venv /home/ubuntu/venv
+      args:
+        creates: /home/ubuntu/venv
 
-    - name: Run Flask app
-      shell: nohup python3 /home/ubuntu/app.py &
+    - name: Install Flask in virtualenv
+      shell: |
+        /home/ubuntu/venv/bin/pip install --upgrade pip
+        /home/ubuntu/venv/bin/pip install Flask==2.3.2
+      environment:
+        PIP_BREAK_SYSTEM_PACKAGES: "1"
+
+    - name: Run Flask app using virtualenv (background)
+      shell: |
+        nohup /home/ubuntu/venv/bin/python /home/ubuntu/app.py &
+      args:
+        chdir: /home/ubuntu
+
