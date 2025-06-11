@@ -12,15 +12,18 @@ This project demonstrates a basic CI/CD pipeline using **Jenkins** and **Ansible
 ---
 
 ## 📁 Project Structure
+```
 .
-├── app/                 # Flask application code
-│ ├── app.py
-│ └── templates/
-├── inventory.ini        # Ansible inventory file (contains EC2 IP)
-├── deploy.yml           # Ansible playbook for provisioning & deployment
-├── requirements.txt     # Python dependencies
-├── deploy.sh            # Shell script to run Ansible (if used)
-└── Jenkinsfile          # Jenkins pipeline script (optional)
+├── app/                  # Flask application code
+│   ├── app.py
+│   └── templates/
+├── inventory.ini         # Ansible inventory file (contains EC2 IP)
+├── deploy.yml            # Ansible playbook for provisioning & deployment
+├── requirements.txt      # Python dependencies
+├── deploy.sh             # Shell script to run Ansible (if used)
+└── Jenkinsfile           # Jenkins pipeline script (optional)
+```
+
 
 
 ## ⚙️ How It Works
