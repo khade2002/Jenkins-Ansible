@@ -47,8 +47,9 @@ This project demonstrates a basic CI/CD pipeline using **Jenkins** and **Ansible
 Run the Ansible playbook:
 ```bash
 ansible-playbook -i inventory.ini deploy.yml
+'''
 
-🧠 What I Learned
+## 🧠 What I Learned
 CI/CD pipeline automation
 
 Infrastructure as Code with Ansible
