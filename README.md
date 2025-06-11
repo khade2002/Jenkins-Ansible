@@ -13,7 +13,7 @@ This project demonstrates a basic CI/CD pipeline using **Jenkins** and **Ansible
 
 ## 📁 Project Structure
 .
-├── app/ # Flask application code
+├── app/                 # Flask application code
 │ ├── app.py
 │ └── templates/
 ├── inventory.ini        # Ansible inventory file (contains EC2 IP)
@@ -54,9 +54,5 @@ Real-world deployment practices on cloud
 
 Integration of DevOps tools for seamless delivery
 
-📌 Author
-Prasad Khade
-LinkedIn: [Your LinkedIn link]
-GitHub: [Your GitHub link]
-Email: khade1676@gmail.com
+
 
